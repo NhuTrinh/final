@@ -7,22 +7,20 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { AuthContext } from "../../context/AuthContext";
 
-/* ---------- Stacks (đã chuyển vào thư mục navigation/candidate) ---------- */
 import JobStack from "./JobStack";
 import CompanyStack from "./CompanyStack";
 import ProfileStack from "./ProfileStack";
 
-/* ---------- Screens (thay cho pages) ---------- */
-// điều chỉnh path đúng với project của bạn, theo hình thì là:
 import EmployerScreen from "../../screens/Candidates/EmployerScreen";
-import LoginScreen from "../../screens/Candidates/LoginScreen";     
+import LoginScreen from "../../screens/Candidates/LoginScreen";
 import RegisterScreen from "../../screens/Candidates/RegisterScreen";
 
 const Tab = createBottomTabNavigator();
+const HEADER_COLOR = "#4868B3";
 
 function ensure(name, Comp) {
   if (!Comp) {
-    console.error(`[MainTabs] ${name} is undefined (import/export sai?)`);
+    console.error(`[MainTabs] ${name} is undefined`);
     return () => (
       <Text style={{ padding: 20, color: "red" }}>{name} is undefined</Text>
     );
@@ -33,17 +31,16 @@ function ensure(name, Comp) {
 /* ----------------------------- Common tab options ----------------------------- */
 function useTabScreenOptions() {
   const insets = useSafeAreaInsets();
-  const bottomSpacer = React.useMemo(() => {
-    if (insets.bottom > 0) return insets.bottom;
-    return 0;
-  }, [insets.bottom]);
+  const safeBottom = insets.bottom ?? 0;
 
   return React.useMemo(
     () => ({
       headerTitleAlign: "center",
-      headerStatusBarHeight: Platform.OS === "android" ? 0 : undefined,
+      // ❌ Bỏ dòng này đi để header tab đồng bộ với header trong các Stack
+      // headerStatusBarHeight: Platform.OS === "android" ? 0 : undefined,
+
       headerStyle: {
-        backgroundColor: "#ffffff",
+        backgroundColor: HEADER_COLOR,
         elevation: 0,
         shadowOpacity: 0,
         borderBottomWidth: 0,
@@ -51,36 +48,45 @@ function useTabScreenOptions() {
       headerTitleStyle: {
         fontSize: 18,
         fontWeight: "600",
+        color: "#fff",
       },
+      headerTintColor: "#fff",
 
       tabBarActiveTintColor: "#2563EB",
       tabBarInactiveTintColor: "#8e8e93",
       tabBarAllowFontScaling: false,
+
       tabBarLabelStyle: {
         fontSize: 11,
-        marginBottom: 6,
+        marginBottom: Platform.OS === "android" ? 2 : 4,
         includeFontPadding: false,
       },
-      tabBarItemStyle: { paddingVertical: 4, maxWidth: 92 },
+
+      tabBarItemStyle: {
+        paddingVertical: 0,
+        maxWidth: 92,
+      },
+
       tabBarStyle: {
         position: "absolute",
         left: 12,
         right: 12,
-        bottom: bottomSpacer,
+        bottom: 0,
         borderRadius: 20,
         backgroundColor: "#ffffff",
         borderTopWidth: 0,
-        paddingTop: 6,
-        paddingBottom: Math.max(6, insets.bottom + 6),
+        paddingTop: 2,
+        paddingBottom: safeBottom > 0 ? safeBottom : 4,
         elevation: 8,
         shadowColor: "#000000",
         shadowOpacity: 0.08,
         shadowOffset: { width: 0, height: 4 },
         shadowRadius: 12,
       },
+
       tabBarHideOnKeyboard: true,
     }),
-    [bottomSpacer, insets.bottom]
+    [safeBottom]
   );
 }
 
@@ -90,7 +96,6 @@ function GuestTabs() {
 
   return (
     <Tab.Navigator initialRouteName="Jobs" screenOptions={screenOptions}>
-      {/* Việc */}
       <Tab.Screen
         name="Jobs"
         component={ensure("JobStack", JobStack)}
@@ -108,7 +113,6 @@ function GuestTabs() {
         }}
       />
 
-      {/* Công ty */}
       <Tab.Screen
         name="Company"
         component={ensure("CompanyStack", CompanyStack)}
@@ -126,7 +130,7 @@ function GuestTabs() {
         }}
       />
 
-      {/* Nhà tuyển dụng */}
+      {/* Nhà tuyển dụng: dùng header của Tab, nên sẽ được chỉnh lại high giống Job */}
       <Tab.Screen
         name="Employer"
         component={ensure("EmployerScreen", EmployerScreen)}
@@ -143,7 +147,6 @@ function GuestTabs() {
         }}
       />
 
-      {/* Đăng nhập */}
       <Tab.Screen
         name="Login"
         component={ensure("LoginScreen", LoginScreen)}
@@ -156,7 +159,6 @@ function GuestTabs() {
         }}
       />
 
-      {/* Đăng ký */}
       <Tab.Screen
         name="Register"
         component={ensure("RegisterScreen", RegisterScreen)}
@@ -182,7 +184,6 @@ function AppTabs() {
 
   return (
     <Tab.Navigator initialRouteName="Profile" screenOptions={screenOptions}>
-      {/* Việc */}
       <Tab.Screen
         name="Jobs"
         component={ensure("JobStack", JobStack)}
@@ -200,7 +201,6 @@ function AppTabs() {
         }}
       />
 
-      {/* Công ty */}
       <Tab.Screen
         name="Company"
         component={ensure("CompanyStack", CompanyStack)}
@@ -218,7 +218,6 @@ function AppTabs() {
         }}
       />
 
-      {/* Nhà tuyển dụng */}
       <Tab.Screen
         name="Employer"
         component={ensure("EmployerScreen", EmployerScreen)}
@@ -235,7 +234,6 @@ function AppTabs() {
         }}
       />
 
-      {/* Hồ sơ */}
       <Tab.Screen
         name="Profile"
         component={ensure("ProfileStack", ProfileStack)}

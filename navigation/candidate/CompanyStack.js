@@ -2,18 +2,30 @@ import * as React from "react";
 import { Text } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-/* 🔥 Import đúng từ screens/Candidates */
 import CompanyScreen from "../../screens/Candidates/CompanyScreen";
 import CompanyDetailScreen from "../../screens/Candidates/CompanyDetailScreen";
 
 const Stack = createNativeStackNavigator();
+const HEADER_COLOR = "#4868B3";
 
-/* tránh crash nếu import sai */
 const ensure = (name, Comp) =>
   Comp ||
   (() => (
     <Text style={{ padding: 20, color: "red" }}>{name} is undefined</Text>
   ));
+
+const defaultStackOptions = {
+  headerStyle: {
+    backgroundColor: HEADER_COLOR,
+  },
+  headerTintColor: "#fff",
+  headerTitleStyle: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "600",
+  },
+  headerShadowVisible: false,
+};
 
 export default function CompanyStack() {
   console.log("check company screens", {
@@ -22,7 +34,7 @@ export default function CompanyStack() {
   });
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={defaultStackOptions}>
       <Stack.Screen
         name="CompanyList"
         component={ensure("CompanyScreen", CompanyScreen)}

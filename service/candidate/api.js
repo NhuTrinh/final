@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import * as Device from "expo-device";
 
-const LOCAL_IP = "192.168.1.175";
+const LOCAL_IP = "192.168.1.88";
 
 const isAndroidEmulator = Platform.OS === "android" && !Device.isDevice;
 

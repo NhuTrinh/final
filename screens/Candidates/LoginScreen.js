@@ -155,7 +155,7 @@ export default function LoginScreen() {
                 </View>
               </View>
 
-              {/* Nút đăng nhập */}
+              {/* Nút đăng nhập thường */}
               <TouchableOpacity
                 onPress={onSubmit}
                 disabled={loading}
@@ -170,6 +170,41 @@ export default function LoginScreen() {
                 ) : (
                   <Text style={styles.primaryButtonText}>Đăng nhập</Text>
                 )}
+              </TouchableOpacity>
+
+              {/* Divider */}
+              <View style={styles.dividerRow}>
+                <View style={styles.dividerLine} />
+                <Text style={styles.dividerText}>Hoặc</Text>
+                <View style={styles.dividerLine} />
+              </View>
+
+              {/* Google login UI (chỉ giao diện) */}
+              <TouchableOpacity
+                activeOpacity={0.85}
+                style={[styles.socialButton, styles.googleButton]}
+                onPress={() =>
+                  Alert.alert(
+                    "Google",
+                    "Chức năng đăng nhập Google đang phát triển"
+                  )
+                }
+              >
+                <Text style={styles.socialText}>Đăng nhập với Google</Text>
+              </TouchableOpacity>
+
+              {/* Facebook login UI (chỉ giao diện) */}
+              <TouchableOpacity
+                activeOpacity={0.85}
+                style={[styles.socialButton, styles.facebookButton]}
+                onPress={() =>
+                  Alert.alert(
+                    "Facebook",
+                    "Chức năng đăng nhập Facebook đang phát triển"
+                  )
+                }
+              >
+                <Text style={styles.socialText}>Đăng nhập với Facebook</Text>
               </TouchableOpacity>
 
               {/* Footer đăng ký */}
@@ -279,6 +314,38 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontWeight: "700",
     fontSize: 16,
+  },
+  dividerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 14,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: "#E5E7EB",
+  },
+  dividerText: {
+    marginHorizontal: 8,
+    fontSize: 12,
+    color: "#9CA3AF",
+  },
+  socialButton: {
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  googleButton: {
+    backgroundColor: "#EA4335",
+  },
+  facebookButton: {
+    backgroundColor: "#1877F2",
+  },
+  socialText: {
+    color: "#FFFFFF",
+    fontWeight: "700",
+    fontSize: 15,
   },
   footerText: {
     marginTop: 10,
